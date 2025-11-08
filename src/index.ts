@@ -29,10 +29,12 @@ const API_BASE_URL = 'https://jekyll-buildr.vercel.app';
 
 // --- CLI Definition ---
 
+const packageJson = require('../package.json');
+
 program
   .name('jekyll-buildr')
   .description('CLI to build and manage Jekyll sites using AI')
-  .version('0.2.0');
+  .version(packageJson.version);
 
 program
   .command('login')
