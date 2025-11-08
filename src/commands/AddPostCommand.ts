@@ -4,16 +4,18 @@ import fs from 'fs-extra';
 import path from 'path';
 import { ApiService } from '../services/ApiService';
 import { UIService } from '../services/UIService';
+import { ensureLoggedIn } from '../auth'; // Import ensureLoggedIn
 
 export class AddPostCommand {
   static async execute(title: string, options: { tags?: string; categories?: string; }) {
     const spinner = ora('✍️  AI sedang menulis postingan untukmu...').start();
     
     try {
+      const { idToken } = await ensureLoggedIn(); // Get idToken
       const tags = options.tags ? options.tags.split(',').map(t => t.trim()) : [];
       const categories = options.categories ? options.categories.split(',').map(c => c.trim()) : [];
       
-      const { content } = await ApiService.createPost(title, tags, categories);
+      const { content } = await ApiService.createPost(title, idToken, tags, categories); // Pass idToken
       
       const date = new Date().toISOString().split('T')[0];
       const slug = title.toLowerCase()

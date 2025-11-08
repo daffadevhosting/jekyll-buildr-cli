@@ -6,17 +6,19 @@ import path from 'path';
 import { ApiService } from '../services/ApiService';
 import { FileManager } from '../utils/FileManager';
 import { UIService } from '../services/UIService';
+import { ensureLoggedIn } from '../auth'; // Import ensureLoggedIn
 
 export class CreateCommand {
-  static async execute(prompt: string, options: { name?: string; noDocker?: boolean; }) {
+  static async execute(siteName: string, prompt: string, options: { noDocker?: boolean; }) {
     let spinner = ora('🧠 Menghubungi AI untuk merancang situsmu...').start();
     
     try {
-      const { structure } = await ApiService.createSite(prompt, options);
-      const siteName = options.name || structure.name || 'jekyll-site';
-      const sitePath = path.join(process.cwd(), siteName);
+      const { idToken } = await ensureLoggedIn(); // Get idToken
+      const { structure } = await ApiService.createSite(prompt, idToken, options); // Pass idToken
+      // const siteName = options.name || structure.name || 'jekyll-site'; // siteName is now a direct argument
+      const projectPath = path.join(process.cwd(), siteName);
 
-      if (await fs.pathExists(sitePath)) {
+      if (await fs.pathExists(projectPath)) {
         spinner.stop(); // Stop spinner sebelum prompt user
         
         const { overwrite } = await inquirer.prompt([
@@ -35,13 +37,13 @@ export class CreateCommand {
         
         // Start new spinner untuk penghapusan
         spinner = ora('🗑️  Menghapus direktori lama...').start();
-        await fs.remove(sitePath);
+        await fs.remove(projectPath);
         spinner.succeed('Direktori lama dihapus.');
       }
 
       // Start spinner untuk pembuatan file
       spinner = ora('📁 Membuat struktur file...').start();
-      await FileManager.writeStructureToDisk(sitePath, structure);
+      await FileManager.writeStructureToDisk(projectPath, structure);
       
       spinner.succeed(chalk.green('✅ Proyek berhasil dibuat!'));
       

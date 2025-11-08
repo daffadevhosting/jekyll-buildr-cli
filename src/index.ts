@@ -9,6 +9,7 @@ import { AddPostCommand } from './commands/AddPostCommand';
 import { ServeCommand } from './commands/ServeCommand';
 import { BuildCommand } from './commands/BuildCommand';
 import { DoctorCommand } from './commands/DoctorCommand';
+import { login, logout } from './auth'; // Import login and logout
 
 // === MAIN PROGRAM ===
 function createProgram() {
@@ -23,12 +24,28 @@ function createProgram() {
       UIService.showHeader();
     });
 
+  // Login command
+  program
+    .command('login')
+    .description('Log in to your Jekyll Buildr account')
+    .action(async () => {
+      await login();
+    });
+
+  // Logout command
+  program
+    .command('logout')
+    .description('Log out of your Jekyll Buildr account')
+    .action(async () => {
+      await logout();
+    });
+
   // Create command
   program
     .command('create')
     .description('Buat situs Jekyll baru dari prompt AI dan simpan secara lokal.')
+    .argument('<siteName>', 'Tentukan nama direktori untuk situs')
     .argument('<prompt>', 'Deskripsi situs yang ingin kamu buat')
-    .option('-n, --name <siteName>', 'Tentukan nama direktori untuk situs')
     .option('--no-docker', 'Gunakan Jekyll lokal instead of Docker')
     .action(CreateCommand.execute);
 

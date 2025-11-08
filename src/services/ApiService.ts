@@ -21,22 +21,30 @@ interface CreatePostResponse {
 }
 
 export class ApiService {
-  static async createSite(prompt: string, options = {}): Promise<CreateSiteResponse> {
+  static async createSite(prompt: string, idToken: string, options = {}): Promise<CreateSiteResponse> {
     const response = await axios.post(`${ConfigService.API_BASE_URL}/ai`, {
       prompt,
       options: {
         useTailwind: prompt.toLowerCase().includes('tailwind'),
         ...options
       }
+    }, {
+      headers: {
+        'Authorization': `Bearer ${idToken}`
+      }
     });
     return response.data as CreateSiteResponse;
   }
 
-  static async createPost(title: string, tags: string[] = [], categories: string[] = []): Promise<CreatePostResponse> {
+  static async createPost(title: string, idToken: string, tags: string[] = [], categories: string[] = []): Promise<CreatePostResponse> {
     const response = await axios.post(`${ConfigService.API_BASE_URL}/ai/generatePost`, {
       title,
       tags,
       categories
+    }, {
+      headers: {
+        'Authorization': `Bearer ${idToken}`
+      }
     });
     return response.data as CreatePostResponse;
   }

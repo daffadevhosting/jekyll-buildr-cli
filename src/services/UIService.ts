@@ -5,7 +5,7 @@ export class UIService {
     console.log(chalk.blue(`
   ╔══════════════════════════════════════════════════════╗
   ║                                                      ║
-  ║                ${chalk.bold('JEKYLL STUDIO CLI')}                     ║
+  ║                ${chalk.bold('JEKYLL BUILDR CLI')}                     ║
   ║           ${chalk.yellow('Build Jekyll Sites with AI 🚀')}              ║
   ║                                                      ║
   ╚══════════════════════════════════════════════════════╝

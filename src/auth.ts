@@ -5,6 +5,10 @@ import * as path from 'path';
 import { homedir } from 'os';
 import { randomBytes } from 'crypto';
 
+// Explicitly type the jwt_decode function from the CommonJS module
+const jwt_decode_module = require('jwt-decode');
+const jwt_decode: <T = unknown>(token: string, options?: any) => T = jwt_decode_module.default;
+
 // --- Konfigurasi ---
 const API_BASE_URL = 'https://jekyll-buildr.vercel.app';
 const CONFIG_DIR = path.join(homedir(), '.jekyll-buildr');
@@ -20,6 +24,11 @@ interface StoredToken {
   role: string;
 }
 
+interface DecodedToken {
+  exp: number; // Expiration time in seconds since epoch
+  // other properties...
+}
+
 function saveToken(token: StoredToken) {
   if (!fs.existsSync(CONFIG_DIR)) {
     fs.mkdirSync(CONFIG_DIR, { recursive: true });
@@ -32,7 +41,6 @@ function getToken(): StoredToken | null {
     return null;
   }
   const data = fs.readFileSync(TOKEN_PATH, 'utf-8');
-  // TODO: Add token expiration check here and implement refresh logic if needed
   return JSON.parse(data);
 }
 
@@ -98,8 +106,19 @@ export async function logout() {
 export async function ensureLoggedIn(): Promise<StoredToken> {
   const token = getToken();
   if (token) {
-    // In a real app, you'd verify token expiration here
-    return token;
+    try {
+      const decodedToken = jwt_decode<DecodedToken>(token.idToken);
+      const currentTime = Date.now() / 1000; // Current time in seconds
+
+      if (decodedToken.exp > currentTime) {
+        // Token is still valid
+        return token;
+      }
+    } catch (error) {
+      console.error('Error decoding token or token invalid:', error);
+      deleteToken(); // Clear invalid token
+      return await login(); // Get a new token
+    }
   }
   
   console.log('You are not logged in. Starting login process...');
