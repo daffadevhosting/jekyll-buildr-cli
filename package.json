@@ -1,0 +1,41 @@
+{
+  "name": "jekyll-buildr-cli",
+  "version": "1.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "jekyll-buildr": "dist/index.js"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jekyll",
+    "ai",
+    "cli",
+    "generative-ai",
+    "static-site-generator",
+    "ssg",
+    "automation",
+    "scaffolding",
+    "jekyll-plugin",
+    "web-development",
+    "blogging"
+  ],
+  "author": "Daffa Aditya",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "commander": "^14.0.2",
+    "node-fetch": "^2.7.0",
+    "open": "^10.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/node-fetch": "^2.6.13",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
