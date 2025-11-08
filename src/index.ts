@@ -7,6 +7,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ensureLoggedIn, login, logout } from './auth';
 import updateNotifier from 'update-notifier';
+import { JEKYLL_BOILERPLATE_STRUCTURE, JEKYLL_BOILERPLATE_CONTENTS } from './boilerplate';
 
 // --- Helper Functions ---
 
@@ -24,6 +25,23 @@ function isJekyllProject(): boolean {
 }
 
 const API_BASE_URL = 'https://jekyll-buildr.vercel.app';
+
+// Recursive function to create boilerplate structure
+const createBoilerplate = (structure: any[], baseDir: string) => {
+  structure.forEach(item => {
+    const itemPath = path.join(baseDir, item.path);
+    if (item.type === 'folder') {
+      fs.mkdirSync(itemPath, { recursive: true });
+      console.log(`✅ Created folder: ${itemPath}`);
+      if (item.children) {
+        createBoilerplate(item.children, baseDir); // Recursively create children
+      }
+    } else if (item.type === 'file') {
+      const content = JEKYLL_BOILERPLATE_CONTENTS[item.path] || '';
+      saveFile(itemPath, content);
+    }
+  });
+};
 
 const execAsync = promisify(exec);
 const program = new Command();
@@ -70,11 +88,16 @@ program
         body: JSON.stringify({ prompt }),
       });
       if (!response.ok) throw new Error(`API Error: ${(await response.json()).error}`);
-      const { gemfile, config } = await response.json();
+      // The AI API is currently returning gemfile and config, but the request is to use boilerplate.
+      // So, we will ignore the AI-generated gemfile and config for now.
+      // const { gemfile, config } = await response.json(); // Keep this if AI should enhance boilerplate
+
       const projectDir = path.join(process.cwd(), projectName);
-      fs.mkdirSync(projectDir);
-      saveFile(path.join(projectDir, 'Gemfile'), gemfile);
-      saveFile(path.join(projectDir, '_config.yml'), config);
+      fs.mkdirSync(projectDir); // Create the root project directory
+
+      // Create the full boilerplate structure
+      createBoilerplate(JEKYLL_BOILERPLATE_STRUCTURE, projectDir);
+
       console.log(`\nSuccess! Your new Jekyll site "${projectName}" was created.`);
     } catch (e: any) { console.error(`\n❌ Error: ${e.message}`); }
   });
