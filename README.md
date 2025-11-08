@@ -10,13 +10,43 @@ Bring the power of AI to your Jekyll development workflow, right from your termi
 -   Node.js (v16 or higher)
 -   A Jekyll Buildr account. If you don't have one, you can sign up for free at [jekyll-buildr app](https://jekyll-buildr.vercel.app).
 
-## Installation
+## Development Setup
 
-Install the CLI globally using npm. This will make the `jekyll-buildr` command available in your terminal.
+To get the CLI running locally for development, follow these steps.
 
-```bash
-npm install -g jekyll-buildr-cli
-```
+1.  **Navigate to the CLI directory:**
+    ```bash
+    cd jekyll-buildr-cli
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Build the project:**
+    This compiles the TypeScript source code into JavaScript.
+    ```bash
+    npm run build
+    ```
+
+4.  **Make the command available:**
+    You have two options to run the CLI locally:
+
+    **Option A: Global Install from Local Source (Recommended)**
+    This simulates a global installation and makes the `jekyll-buildr` command available system-wide.
+    ```bash
+    # Run this from within the jekyll-buildr-cli directory
+    npm install -g .
+    ```
+    *Note: Depending on your system configuration, you might need to run this command with `sudo`.*
+
+    **Option B: Using `npx`**
+    If you prefer not to install it globally, you can run the command using `npx` from within the `jekyll-buildr-cli` directory.
+    ```bash
+    # Example:
+    npx jekyll-buildr login
+    ```
 
 ## Getting Started: Login
 
