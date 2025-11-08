@@ -6,9 +6,7 @@ import fetch from 'node-fetch';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ensureLoggedIn, login, logout } from './auth';
-
-const execAsync = promisify(exec);
-const program = new Command();
+import updateNotifier from 'update-notifier';
 
 // --- Helper Functions ---
 
@@ -27,9 +25,13 @@ function isJekyllProject(): boolean {
 
 const API_BASE_URL = 'https://jekyll-buildr.vercel.app';
 
+const execAsync = promisify(exec);
+const program = new Command();
+
 // --- CLI Definition ---
 
 const packageJson = require('../package.json');
+updateNotifier({ pkg: packageJson }).notify();
 
 program
   .name('jekyll-buildr')
