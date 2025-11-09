@@ -1,6 +1,6 @@
 {
   "name": "jekyll-buildr-cli",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "CLI for Jekyll Buildr, bringing AI-powered generation of posts, components, and sites to your terminal.",
   "homepage": "https://github.com/daffadevhosting/jekyll-buildr-cli",
   "repository": {
