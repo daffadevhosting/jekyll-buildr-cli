@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { ErrorHandler } from '../utils/ErrorHandler';
 
 export class UIService {
   static showHeader() {
@@ -13,6 +14,9 @@ export class UIService {
   }
 
   static handleApiError(error: any) {
+    // Use the new error handler for logging
+    ErrorHandler.handle(error, { operation: 'API call' });
+    
     if (error.response) {
       console.error(chalk.red(`  Error ${error.response.status}: ${error.response.data.error || 'Terjadi kesalahan di server'}`));
       if (error.response.status === 404) {

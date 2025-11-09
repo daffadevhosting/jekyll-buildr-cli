@@ -6,7 +6,7 @@ export class ServeCommand {
   static async execute(options: { docker?: boolean; port?: string; }) {
     const useDocker = options.docker && await SystemUtils.checkDocker();
     const port = options.port || '4000';
-    
+
     if (useDocker) {
       await ServeCommand.serveWithDocker(port);
     } else {
@@ -18,7 +18,7 @@ export class ServeCommand {
     console.log(chalk.blue('🐳 Menjalankan server dengan Docker...'));
     const projectPath = process.cwd();
     const dockerCommand = `docker run --rm -it -p ${port}:4000 -v "${projectPath}":/srv/jekyll jekyll/jekyll jekyll serve --livereload --force_polling`;
-    
+
     console.log(chalk.yellow('Tekan Ctrl+C untuk menghentikan server\n'));
     await SystemUtils.runCommand(dockerCommand, 'Server Docker berjalan');
   }
@@ -30,10 +30,10 @@ export class ServeCommand {
       console.log(chalk.cyan('Atau gunakan: jekyll-buildr serve --no-docker'));
       return;
     }
-    
+
     console.log(chalk.blue('🚀 Menjalankan server Jekyll lokal...'));
     const jekyllCommand = `bundle exec jekyll serve --livereload --port ${port}`;
-    
+
     console.log(chalk.yellow('Tekan Ctrl+C untuk menghentikan server\n'));
     const child = exec(jekyllCommand);
 

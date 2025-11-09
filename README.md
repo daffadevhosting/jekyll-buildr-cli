@@ -10,7 +10,19 @@ Bring the power of AI to your Jekyll development workflow, right from your termi
 -   Node.js (v16 or higher)
 -   A Jekyll Buildr account. If you don't have one, you can sign up for free at [jekyll-buildr app](https://jekyll-buildr.vercel.app).
 
-## Development Setup
+## Installation
+
+### Global Installation
+
+To install the CLI globally, run:
+
+```bash
+npm install -g jekyll-buildr-cli
+```
+
+This makes the `jekyll-buildr` command available system-wide.
+
+### Development Setup
 
 To get the CLI running locally for development, follow these steps.
 
@@ -61,7 +73,7 @@ This command will open your web browser for you to securely log in. Your credent
 
 ## Commands
 
-Here is a complete list of available commands.
+Here is a complete list of available commands with detailed explanations.
 
 ### `login`
 
@@ -71,6 +83,8 @@ Authenticates the CLI with your Jekyll Buildr account.
 jekyll-buildr login
 ```
 
+**Description:** Opens your web browser to securely log in to your Jekyll Buildr account. After successful authentication, your credentials are stored locally for future CLI sessions.
+
 ### `logout`
 
 Logs you out of the CLI by deleting your local session credentials.
@@ -79,58 +93,135 @@ Logs you out of the CLI by deleting your local session credentials.
 jekyll-buildr logout
 ```
 
-### `create <projectName> [prompt]`
+**Description:** Removes your stored authentication credentials from your local machine, requiring you to log in again for future sessions.
 
-Creates a new, basic Jekyll project structure using an AI-powered prompt.
+### `create <siteName> <prompt>`
 
--   `<projectName>`: The name of the directory for your new project.
--   `[prompt]`: A descriptive prompt of the site you want to build.
+Creates a new, complete Jekyll project structure using an AI-powered prompt.
+
+-   `<siteName>`: The name of the directory for your new project.
+-   `<prompt>`: A descriptive prompt of the site you want to build.
+
+**Options:**
+-   `--no-docker`: Use local Jekyll installation instead of Docker
 
 **Example:**
 ```bash
-jekyll-buildr create my-awesome-blog "A personal blog about my travel adventures and photography"
+jekyll-buildr create my-awesome-blog "A personal blog about my travel adventures and photography with a clean, minimalist design"
 ```
+
+**What it creates:** This command generates a complete Jekyll site with:
+-   Gemfile with required dependencies
+-   Configuration file (_config.yml) 
+-   Layout files (_layouts/)
+-   Include components (_includes/)
+-   Sample pages and posts
+-   Asset directories (CSS, JS, images)
+-   README.md with setup instructions
+
+### `add post <title>`
+
+Generates a new blog post in the `_posts` directory using AI.
+
+-   `<title>`: The title of the blog post.
+
+**Options:**
+-   `--tags <tags>`: Comma-separated list of tags for the post
+-   `--categories <categories>`: Comma-separated list of categories for the post
+
+**Example:**
+```bash
+jekyll-buildr add post "The Rise of AI in Web Development" --tags "ai,machine-learning,webdev" --categories "technology,trends"
+```
+
+**What it does:** Creates a new markdown file in the `_posts` directory with the current date, title slug, and AI-generated content with proper Jekyll frontmatter.
+
+### `serve`
+
+Runs the standard `jekyll serve` command within your current project directory.
+
+**Options:**
+-   `-p, --port <port>`: Port to use for the development server (default: 4000)
+-   `--no-docker`: Use local Jekyll installation instead of Docker
+
+**Example:**
+```bash
+jekyll-buildr serve --port 3000
+```
+
+**What it does:** Starts a local Jekyll development server with live reload, making your site accessible at http://localhost:4000 (or specified port) for preview.
 
 ### `build`
 
-Runs the standard `jekyll build` command within your current project directory. Requires Jekyll to be installed in the project's bundle.
+Builds the static site for deployment.
 
+**Options:**
+-   `--no-docker`: Use local Jekyll installation instead of Docker
+
+**Example:**
 ```bash
 jekyll-buildr build
 ```
 
-### `generate-post`
+**What it does:** Compiles your Jekyll site into static files in the `_site` directory, ready for deployment to a web server or hosting service.
 
-Generates a new blog post in the `_posts` directory using AI. Must be run from within a Jekyll project folder.
+### `doctor`
 
-**Options:**
--   `-t, --title <title>`: (Required) The title of the blog post.
--   `-a, --author <author>`: The author's name.
--   `-c, --categories <categories>`: Comma-separated list of categories.
+Checks your system environment and dependencies.
 
-**Example:**
 ```bash
-jekyll-buildr generate-post --title "The Rise of AI in Web Development" --categories "tech,ai,webdev"
+jekyll-buildr doctor
 ```
 
-### `generate-component <prompt>`
+**What it does:** Verifies that Node.js, Docker, Jekyll, and API connectivity are properly configured, and provides helpful suggestions if issues are detected.
 
-Generates a reusable Jekyll component (in the `_includes` directory) based on a descriptive prompt.
+---
 
--   `<prompt>`: A description of the component you want.
+## Performance Features
 
-**Example:**
+### Caching
+The CLI now includes intelligent caching that stores API responses to reduce repeated calls and improve performance. API calls with the same parameters will be served from the cache, making subsequent executions faster.
+
+### Memory Management
+Automatic memory management and garbage collection help ensure efficient memory usage during operations, especially when processing large sites.
+
+### Parallel Processing
+File operations are now performed in parallel where possible, significantly reducing the time needed to create complex site structures.
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: If you encounter permission errors during installation, try:
+   ```bash
+   npm install -g jekyll-buildr-cli --unsafe-perm=true
+   ```
+
+2. **Docker Not Found**: If Docker is not found but you have it installed, ensure it's in your PATH or use the `--no-docker` option.
+
+3. **API Connection Issues**: Check your internet connection and ensure you're logged in. You can use `jekyll-buildr doctor` to check API connectivity.
+
+4. **Memory Issues**: For large sites, ensure you have sufficient RAM. The CLI will attempt to manage memory automatically, but very large sites may require more resources.
+
+### Getting Help
+
+For additional support, run:
 ```bash
-jekyll-buildr generate-component "a responsive navigation bar with a logo and three links"
+jekyll-buildr --help
 ```
 
-### `generate-image <prompt>`
+This will display detailed help information for all commands.
 
-Generates an image using AI and saves it to the `assets/images` directory. **This is a Pro-only feature.**
+---
 
--   `<prompt>`: A description of the image you want to create.
+## Contributing
 
-**Example:**
-```bash
-jekyll-buildr generate-image "a futuristic cat wearing sunglasses, cyberpunk style"
-```
+Contributions are welcome! Please see the [contributing guidelines](CONTRIBUTING.md) for more information.
+
+---
+
+## License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
