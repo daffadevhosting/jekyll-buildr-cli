@@ -11,19 +11,20 @@ export class FileManager {
     try {
       await fs.ensureDir(basePath);
 
+      // Write configuration first to have it available for Gemfile generation
+      if (structure.config) {
+        await fs.writeFile(path.join(basePath, '_config.yml'), yaml.stringify(structure.config));
+      }
+
       // Group basic file operations with Promise.all for better performance
       const basicFilesPromises = [
-        fs.writeFile(path.join(basePath, 'Gemfile'), FileGenerator.generateGemfile()),
+        fs.writeFile(path.join(basePath, 'Gemfile'), FileGenerator.generateGemfile(structure.config)),
         fs.writeFile(path.join(basePath, '.gitignore'), FileGenerator.generateGitignore()),
         fs.writeFile(path.join(basePath, 'README.md'), FileGenerator.generateReadme(structure))
       ];
 
-      // Write configuration
-      if (structure.config) {
-        basicFilesPromises.push(
-          fs.writeFile(path.join(basePath, '_config.yml'), yaml.stringify(structure.config))
-        );
-      }
+      // Execute basic files in parallel
+      await Promise.all(basicFilesPromises);
 
       // Execute basic files in parallel
       await Promise.all(basicFilesPromises);

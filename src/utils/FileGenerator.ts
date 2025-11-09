@@ -1,17 +1,21 @@
 import yaml from 'yaml';
 
 export class FileGenerator {
-  static generateGemfile() {
-    return `source "https://rubygems.org"
-
-gem "jekyll", "~> 4.3"
-
-group :jekyll_plugins do
-  gem "jekyll-feed"
-  gem "jekyll-sitemap"
-  gem "jekyll-paginate"
-end
-`;
+  static generateGemfile(structureConfig?: any) {
+    // Check if the config specifies a theme and whether it's minima
+    const theme = structureConfig?.theme || '';
+    const isMinimaTheme = theme.toLowerCase() === 'minima';
+    
+    let gemfileContent = `source "https://rubygems.org"\n\ngem "jekyll", "~> 4.3"\n\ngroup :jekyll_plugins do\n  gem "jekyll-feed"\n  gem "jekyll-sitemap"\n  gem "jekyll-paginate"`;
+    
+    // Add minima gem if the theme is minima
+    if (isMinimaTheme) {
+      gemfileContent += `\n  gem "minima", "~> 2.5"`;
+    }
+    
+    gemfileContent += `\nend`;
+    
+    return gemfileContent;
   }
 
   static generateGitignore() {
