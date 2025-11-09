@@ -1,4 +1,4 @@
-import ora from 'ora';
+import ora, { Ora } from 'ora';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import fs from 'fs-extra';
@@ -11,7 +11,7 @@ import { PerformanceMonitor } from '../utils/PerformanceMonitor';
 
 export class CreateCommand {
   static async execute(siteName: string, prompt: string, options: { noDocker?: boolean; }) {
-    let spinner: ora.Ora | null = null;
+    let spinner: Ora | null = null;
 
     try {
       spinner = ora('🧠 Menghubungi AI untuk merancang situsmu...').start();

@@ -1,4 +1,4 @@
-import ora from 'ora';
+import ora, { Ora } from 'ora';
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
@@ -9,7 +9,7 @@ import { PerformanceMonitor } from '../utils/PerformanceMonitor';
 
 export class AddPostCommand {
   static async execute(title: string, options: { tags?: string; categories?: string; }) {
-    let spinner: ora.Ora | null = null;
+    let spinner: Ora | null = null;
 
     try {
       spinner = ora('✍️  AI sedang menulis postingan untukmu...').start();

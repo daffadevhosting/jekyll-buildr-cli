@@ -21,7 +21,7 @@ export class BuildCommand {
 
       console.log(chalk.green('📦 Situs siap di-deploy! File ada di folder _site/'));
     } catch (error) {
-      console.error(chalk.red('❌ Gagal membangun situs:'), error.message);
+      console.error(chalk.red('❌ Gagal membangun situs:'), (error as Error).message);
       process.exit(1);
     }
   }

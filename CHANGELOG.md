@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.2] - 2025-11-09
+## [2.1.0] - 2025-11-09
 
 ### Added
 - **Performance Monitoring**: New PerformanceMonitor utility for tracking execution times and memory usage

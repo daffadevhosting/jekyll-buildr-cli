@@ -34,7 +34,7 @@ export class CacheService {
 
       return entry.data as T;
     } catch (error) {
-      console.warn('Cache read error:', error.message);
+      console.warn('Cache read error:', (error as Error).message);
       return null;
     }
   }
@@ -53,7 +53,7 @@ export class CacheService {
       const filePath = path.join(CacheService.CACHE_DIR, `${key}.json`);
       await fs.writeJson(filePath, entry, { spaces: 2 });
     } catch (error) {
-      console.warn('Cache write error:', error.message);
+      console.warn('Cache write error:', (error as Error).message);
     }
   }
 
@@ -63,7 +63,7 @@ export class CacheService {
         await fs.emptyDir(CacheService.CACHE_DIR);
       }
     } catch (error) {
-      console.warn('Cache clear error:', error.message);
+      console.warn('Cache clear error:', (error as Error).message);
     }
   }
 
@@ -108,7 +108,7 @@ export class CacheService {
         }
       }
     } catch (error) {
-      console.warn('Cache cleanup error:', error.message);
+      console.warn('Cache cleanup error:', (error as Error).message);
     }
   }
 

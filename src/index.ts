@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { ConfigService } from './services/ConfigService';
-import { NotificationService } from './services/NotificationService';
-import { UIService } from './services/UIService';
-import { CacheService } from './utils/CacheService';
-import { MemoryManager } from './utils/MemoryManager';
-import { PerformanceMonitor } from './utils/PerformanceMonitor';
-import { ErrorHandler } from './utils/ErrorHandler';
+import { ConfigService } from './services/ConfigService.js';
+import { NotificationService } from './services/NotificationService.js';
+import { UIService } from './services/UIService.js';
+import { CacheService } from './utils/CacheService.js';
+import { MemoryManager } from './utils/MemoryManager.js';
+import { PerformanceMonitor } from './utils/PerformanceMonitor.js';
+import { ErrorHandler } from './utils/ErrorHandler.js';
 
 // Initialize cache when the application starts
 CacheService.initialize().catch(console.error);
@@ -39,7 +39,7 @@ async function createProgram() {
     .command('login')
     .description('Log in to your Jekyll Buildr account')
     .action(async () => {
-      const { login } = await import('./auth');
+      const { login } = await import('./auth.js');
       await login();
     });
 
@@ -48,7 +48,7 @@ async function createProgram() {
     .command('logout')
     .description('Log out of your Jekyll Buildr account')
     .action(async () => {
-      const { logout } = await import('./auth');
+      const { logout } = await import('./auth.js');
       await logout();
     });
 
@@ -60,7 +60,7 @@ async function createProgram() {
     .argument('<prompt>', 'Deskripsi situs yang ingin kamu buat')
     .option('--no-docker', 'Gunakan Jekyll lokal instead of Docker')
     .action(async (siteName, prompt, options) => {
-      const { CreateCommand } = await import('./commands/CreateCommand');
+      const { CreateCommand } = await import('./commands/CreateCommand.js');
       await CreateCommand.execute(siteName, prompt, options);
     });
 
@@ -76,7 +76,7 @@ async function createProgram() {
     .option('--tags <tags>', 'Tags untuk postingan (dipisahkan koma)')
     .option('--categories <categories>', 'Kategori untuk postingan (dipisahkan koma)')
     .action(async (title, options) => {
-      const { AddPostCommand } = await import('./commands/AddPostCommand');
+      const { AddPostCommand } = await import('./commands/AddPostCommand.js');
       await AddPostCommand.execute(title, options);
     });
 
@@ -87,7 +87,7 @@ async function createProgram() {
     .option('-p, --port <port>', 'Port yang akan digunakan', '4000')
     .option('--no-docker', 'Gunakan Jekyll lokal instead of Docker')
     .action(async (options) => {
-      const { ServeCommand } = await import('./commands/ServeCommand');
+      const { ServeCommand } = await import('./commands/ServeCommand.js');
       await ServeCommand.execute(options);
     });
 
@@ -97,7 +97,7 @@ async function createProgram() {
     .description('Bangun situs Jekyll')
     .option('--no-docker', 'Gunakan Jekyll lokal instead of Docker')
     .action(async (options) => {
-      const { BuildCommand } = await import('./commands/BuildCommand');
+      const { BuildCommand } = await import('./commands/BuildCommand.js');
       await BuildCommand.execute(options);
     });
 
@@ -106,7 +106,7 @@ async function createProgram() {
     .command('doctor')
     .description('Periksa environment dan dependencies')
     .action(async () => {
-      const { DoctorCommand } = await import('./commands/DoctorCommand');
+      const { DoctorCommand } = await import('./commands/DoctorCommand.js');
       await DoctorCommand.execute();
     });
 
