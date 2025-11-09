@@ -224,7 +224,7 @@ Contributions are welcome! Please see the [contributing guidelines](CONTRIBUTING
 
 ## Version Compatibility
 
-The CLI version (2.0.2) is compatible with the Jekyll Buildr web application and backend API. The CLI communicates with the webapp's API endpoints at `https://jekyll-buildr.vercel.app/api` to provide AI-powered features. The CLI and webapp are designed to work together seamlessly, with the webapp handling authentication and AI processing while the CLI provides a convenient terminal interface.
+The CLI version (2.1.1) is compatible with the Jekyll Buildr web application and backend API. The CLI communicates with the webapp's API endpoints at `https://jekyll-buildr.vercel.app/api` to provide AI-powered features. The CLI and webapp are designed to work together seamlessly, with the webapp handling authentication and AI processing while the CLI provides a convenient terminal interface.
 
 ## License
 
