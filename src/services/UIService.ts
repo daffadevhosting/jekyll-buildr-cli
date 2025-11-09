@@ -16,12 +16,12 @@ export class UIService {
     if (error.response) {
       console.error(chalk.red(`  Error ${error.response.status}: ${error.response.data.error || 'Terjadi kesalahan di server'}`));
       if (error.response.status === 404) {
-        console.log(chalk.yellow('  freeUser: Pastikan [Jekyll Studio API](https://github.com/daffadevhosting/jekyll-studio-api) sudah berjalan di http://localhost:3000'));
+        console.log(chalk.yellow('  freeUser: Pastikan [Jekyll Buildr API](https://jekyll-buildr.vercel.app) sudah login dengan akun GitHub Anda.'));
       }
     } else if (error.code === 'ECONNREFUSED') {
-      console.error(chalk.red('  Tidak dapat terhubung ke Jekyll Studio API'));
+      console.error(chalk.red('  Tidak dapat terhubung ke Jekyll Buildr API'));
       console.log(chalk.yellow('  Pastikan API sudah berjalan: npm run dev (di folder API)'));
-      console.log(chalk.yellow('  Atau set environment variable: export JEKYLL_STUDIO_API_URL=<your-api-url>'));
+      console.log(chalk.yellow('  Atau set environment variable: export JEKYLL_BUILDR_API_URL=<your-api-url>'));
     } else {
       console.error(chalk.red(`  Kesalahan tidak terduga: ${error.message}`));
     }
